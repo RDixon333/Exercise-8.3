@@ -1,0 +1,76 @@
+createdb -U postgres musicdb
+psql -U postgres musicdb
+
+
+create table artist (
+  id serial primary key,
+  name varchar (100),
+  dateob date,
+  cityob varchar (100),
+  genre varchar (100)
+);
+
+create table album (
+  id serial primary key,
+  artist_id integer not null references artist(id),
+  albumtitle varchar (100),
+  release date
+);
+
+create table track (
+  id serial primary key,
+  album_id integer not null references album(id),
+  tracktitle varchar (100),
+  tracklength varchar(100),
+  composer varchar (100)
+);
+
+
+insert into artist (name, dateob, cityob, genre) values ('Fat Jon', to_date('1975-09-06', 'YYYY-MM-DD'), 'Cincinnati, OH', 'Hip Hop');
+insert into artist (name, dateob, cityob, genre) values ('Thom Yorke', to_date('1968-10-07', 'YYYY-MM-DD'), 'Wellingborough, UK', 'Alternative');
+insert into artist (name, dateob, cityob, genre) values ('Sade Adu', to_date('1959-01-16', 'YYYY-MM-DD'), 'Ibadan, Nigeria', 'Soul');
+
+insert into album (artist_id, albumtitle, release) values ('1','Rapture Kontrolle', to_date('2012', 'YYYY'));
+insert into album (artist_id, albumtitle, release) values ('2','The Eraser', to_date('2006', 'YYYY'));
+insert into album (artist_id, albumtitle, release) values ('3','Love Deluxe', to_date('1992', 'YYYY'));
+
+
+
+insert into track (album_id, tracktitle, tracklength, composer) values ('1', 'Magic Flute', '3:02', 'Jon Marshall');
+insert into track (album_id, tracktitle, tracklength, composer) values ('1', 'Intellect Bombs (To Save You)', '3:34', 'Jon Marshall');
+insert into track (album_id, tracktitle, tracklength, composer) values ('1', 'The Prowess', '3:19', 'Jon Marshall');
+
+
+insert into track (album_id, tracktitle, tracklength, composer) values ('2', 'Analyse', '4:05', 'Thom Yorke');
+insert into track (album_id, tracktitle, tracklength, composer) values ('2', 'The Clock', '4:14', 'Thom Yorke');
+insert into track (album_id, tracktitle, tracklength, composer) values ('2', 'Skip Divided', '3:33', 'Thom Yorke');
+
+
+insert into track (album_id, tracktitle, tracklength, composer) values ('3', 'No Ordinary Love', '7:20', 'Sade Adu');
+insert into track (album_id, tracktitle, tracklength, composer) values ('3', 'Feel No Pain', '5:09', 'Sade Adu');
+insert into track (album_id, tracktitle, tracklength, composer) values ('3', 'Bullet Proof Soul', '5:26', 'Sade Adu');
+
+
+SELECT * FROM album al JOIN artist ar ON al.artist_id = ar.id WHERE ar.name = 'Fat Jon';
+SELECT * FROM album al JOIN artist ar ON al.artist_id = ar.id WHERE ar.name = 'Thom Yorke';
+SELECT * FROM album al JOIN artist ar ON al.artist_id = ar.id WHERE ar.name = 'Sade Adu';
+
+
+UPDATE album SET albumtitle = 'TEST' WHERE id = 3;
+SELECT * FROM album;
+
+UPDATE album SET albumtitle = 'Love Deluxe' WHERE id = 3;
+SELECT * FROM album;
+
+UPDATE album SET release = to_date('1992-10-26', 'YYYY-MM-DD') WHERE id = 3;
+SELECT * FROM album;
+
+UPDATE album SET release = to_date('2006-07-10', 'YYYY-MM-DD') WHERE id = 2;
+UPDATE album SET release = to_date('2012-04-13', 'YYYY-MM-DD') WHERE id = 1;
+SELECT * FROM album;
+
+DELETE FROM track WHERE tracktitle = 'Magic Flute';
+SELECT * FROM track;
+
+insert into track (album_id, tracktitle, tracklength, composer) values ('1', 'Magic Flute', '3:02', 'Jon Marshall');
+SELECT * FROM track;
